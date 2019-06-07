@@ -7,9 +7,10 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
+
+
 use app\models\LoginForm;
 use app\models\ContactForm;
-
 use app\models\SignupForm;
 
 class SiteController extends Controller
@@ -30,7 +31,7 @@ class SiteController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['login'],
+                        'actions' => ['login', 'signup'],
                         'allow' => true,
                         'roles' => ['?']    
 
@@ -40,7 +41,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['post', 'get'],
                 ],
             ],
         ];
@@ -55,10 +56,7 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            
         ];
     }
 
@@ -84,7 +82,7 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if ($model->load(Yii::$app->request->post()) && $model->loginAdmin()) {
             return $this->goBack();
         }
 
@@ -136,28 +134,20 @@ class SiteController extends Controller
 
 
 
-    public function actionSay($target = "World") 
-    {
-        return $this->render('say', ['target' => $target]);        
-    }
-
-
-
-    /* Displays signup page.
+     /* Displays signup page.
      *
      * @return string
      */
     public function actionSignup() {
 
-        if (!Yii::$app->user->isGuest) {
-            $this->goHome();
-        }
-
         $model = new SignupForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            
-            Yii::$app->session->setFlash('signupFormSubmitted');
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user))
+                    return $this->goHome();
+            }    
+
         }
 
         return $this->render('signup', ['model' => $model]);

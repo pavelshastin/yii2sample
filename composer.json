@@ -22,8 +22,11 @@
         "kartik-v/yii2-widget-select2": "dev-master",
         "yiisoft/yii2-bootstrap4": "^2.0",
         "kartik-v/yii2-widget-datetimepicker": "*",
-        "dektrium/yii2-user": "^0.9.14"
-
+        "dektrium/yii2-user": "^0.9.14",
+        "yiisoft/yii2-authclient": "*",
+        "fortawesome/font-awesome": "4.2.0",
+        "yiisoft/yii2-swiftmailer": "*",
+        "kartik-v/yii2-social": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -33,7 +36,9 @@
         "codeception/base": "~2.3.0",
         "codeception/verify": "~0.4.0",
         "codeception/specify": "~0.4.6",
-        "symfony/browser-kit": ">=2.7 <=4.2.4"
+        "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "yiisoft/yii2-jui": "*",
+        "yiisoft/yii2-codeception": "*"
     },
     "config": {
         "process-timeout": 1800,

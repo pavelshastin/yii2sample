@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 $this->title = "SignupForm";
+//print_r($model);
 ?>
 
 <div class="site-contact">
@@ -21,9 +22,9 @@ $this->title = "SignupForm";
 		<div class="row">
 			<div class="col-lg-5">
 				<?php $form = ActiveForm::begin(['id' => 'signup-form']); ?>
-					<?= $form->field($model, 'name')->textInput(['autofocus' => true]); ?>
+					<?= $form->field($model, 'username')->textInput(['autofocus' => true]); ?>
 					<?= $form->field($model, 'password'); ?>
-					<?= $form->field($model, 'role'); ?>
+					<?= $form->field($model, 'email'); ?>
 
 					<div class="form-group">
 						<?= Html::submitButton('Signup', ['class' => "btn btn-primary", 'name' => 'signup-button']); ?>
