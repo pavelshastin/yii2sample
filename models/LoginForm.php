@@ -7,7 +7,7 @@ use yii\base\Model;
 use yii\web\NotFoundHttpException;
 
 use app\models\helpers\ValueHelpers;
-
+use app\models\User;
 /**
  * LoginForm is the model behind the login form.
  *
@@ -62,8 +62,10 @@ class LoginForm extends Model
      */
     public function login()
     {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+        
+        if ($this->validate() && $this->getUser()) {
+
+           return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;
     }
@@ -76,15 +78,18 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
-        }
 
+           $this->_user = User::findByUsername($this->username);
+        }
+        
         return $this->_user;
     }
 
 
     public function loginAdmin(){
-        if (($this->validate()) && $this->getUser()->role_id >= ValueHelpers::getRoleValue('Admin') 
+
+
+        if ($this->validate() && $this->getUser()->role_id >= ValueHelpers::getRoleValue('Admin') 
                 && $this->getUser()->status_id == ValueHelpers::getStatusValue('Active')) {
 
             return Yii::$app->user->login($this->getUser(), $this->remmemberMe ? 3600 * 24 * 30: 0);    

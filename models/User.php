@@ -20,13 +20,7 @@ class User extends ActiveRecord implements IdentityInterface
     
     const STATUS_ACTIVE = 10;
 
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    
+      
     public static function tablename() {
 
         return 'user';
@@ -49,18 +43,17 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function roles(){
         return [
-            ['role_id', 'default', self::STATUS_ACTIVE],
+            ['role_id', 'default', 'value' => 10],
             [['role_id'], 'in', 'value' => array_keys($this->getRoleList())],
 
-            ['status_id', 'default', 'value' => 10],
-            [['status_id'], 'default', 'value' => self::STATUS_ACTIVE],
+            ['status_id', 'default', self::STATUS_ACTIVE],
+            [['status_id'], 'in', 'value' => array_keys($this->getStatusList())],
 
             ['user_type_id', 'default', 'value' => 10],
             [['user_type_id'], 'in', 'value' => array_keys($this->getUserTypeList())],
 
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
-            ['username', 'unique'],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'filter', 'filter' => 'trim'],
@@ -123,7 +116,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getStatusList(){
         $droptions = Status::find()->asArray()->all();
-        return ArrayHelper::map($droptions, ['status_value', 'status_name']) ;
+        return ArrayHelper::map($droptions, ['status_value', 'status_name']);
     }
 
 
@@ -238,15 +231,15 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->auth_key;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    // *
+    //  * {@inheritdoc}
+     
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->auth_key === $authKey;
     }
 
     /**

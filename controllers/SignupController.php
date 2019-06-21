@@ -25,8 +25,7 @@ class SignupController extends Controller {
 		$model = new SignupForm();
 
 		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-			
-			
+				
 			Yii::$app->session->setFlash('signupFormSubmitted');
 			$this->refresh();
 
